@@ -14,7 +14,7 @@ import torch.optim as optim
 from module import EmbNet, MyDataset
 
 CUDA = True
-CURRENT_TIME = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+HASHCODE = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 DICT_PATH = "./parameter"
 
@@ -68,12 +68,12 @@ def main():
 
             current_accuracy = current_correct_num / current_total_num
             print(f'Test Accuracy: {current_accuracy * 100:.6f}%')
-
+            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_newest.pth")
             # 保存当前批次最好的训练结果
             if current_accuracy > max_current_accuracy:
                 max_current_accuracy = current_accuracy
                 print(f"Current-Best -> {max_current_accuracy * 100:.6f}%")
-                torch.save(run_model.state_dict(), f"./parameter/current_best_{CURRENT_TIME}.pth")
+                torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_current_best.pth")
             correct_num += current_correct_num
             total_num += current_total_num
             accuracy = correct_num / total_num
@@ -81,7 +81,7 @@ def main():
             if accuracy > max_total_accuracy:
                 max_total_accuracy = accuracy
                 print(f"Total  -Best -> {max_total_accuracy * 100:.6f}%")
-                torch.save(run_model.state_dict(), f"./parameter/total_best_{CURRENT_TIME}.pth")
+                torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_total_best.pth")
 
 
 if __name__ == "__main__":
