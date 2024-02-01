@@ -1,0 +1,6 @@
+torchvision~=0.16.0+cu118
+torch~=2.1.0+cu118
+jieba~=0.42.1
+opencv-python~=4.9.0.80
+numpy~=1.26.3
+torchtext~=0.6.0
