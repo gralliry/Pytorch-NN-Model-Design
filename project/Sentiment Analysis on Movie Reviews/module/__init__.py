@@ -5,8 +5,8 @@
 # @File    : train.py.py
 # @Description :
 
-from .model import EmbNet
+from .model import *
 
-from .criterion import CustomLoss
+from .criterion import *
 
-from .dataset import MyDataset
+from .dataset import *

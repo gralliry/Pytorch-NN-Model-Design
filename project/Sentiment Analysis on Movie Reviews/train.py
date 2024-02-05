@@ -11,20 +11,22 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from module import EmbNet, MyDataset
+from module import TextRCNN, TextRNN_Att, MyDataset
 
 CUDA = True
-HASHCODE = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
 DICT_PATH = "./parameter"
 
 
 def main():
     device = torch.device('cuda' if torch.cuda.is_available() and CUDA else 'cpu')
+    print("Using", device)
 
-    dataset = MyDataset(device=device, batch_size=1024)
+    dataset = MyDataset(device=device, batch_size=2048)
     # 实例化模型
-    run_model = EmbNet(len(dataset.text.vocab), dataset.text.fix_length).to(device)
+    run_model = TextRCNN(len(dataset.text.vocab)).to(device)
+
+    HASHCODE = f"{run_model.__class__.__name__}_{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
     # 使用预训练的词嵌入初始化嵌入层
     # pretrained_embeddings = TEXT.vocab.vectors
     # run_model.embedding.weight.data.copy_(pretrained_embeddings)
@@ -40,13 +42,14 @@ def main():
     correct_num = 0
     total_num = 0
     max_total_accuracy = 1e-8
+    max_current_accuracy = 1e-8
 
     # 训练模型
     num_epochs = 1000
     for epoch in range(1, num_epochs + 1):
         print(f"No.{epoch} training...")
         run_model.train()
-        for text, labels in dataset.iterator(train=True):
+        for text, labels in dataset.get_train_iterator(train=True):
             predictions = run_model(text)
 
             loss = criterion(predictions, labels)
@@ -57,31 +60,31 @@ def main():
 
         current_correct_num = 0
         current_total_num = 0
-        max_current_accuracy = 1e-8
+
         run_model.eval()
         with torch.no_grad():
-            for text, labels in dataset.iterator(train=False):
+            for text, labels in dataset.get_train_iterator(train=False):
                 predictions = run_model(text)
 
                 current_correct_num += (predictions.argmax(1) == labels).sum().item()
                 current_total_num += labels.size(0)
 
-            current_accuracy = current_correct_num / current_total_num
-            print(f'Test Accuracy: {current_accuracy * 100:.6f}%')
-            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_newest.pth")
-            # 保存当前批次最好的训练结果
-            if current_accuracy > max_current_accuracy:
-                max_current_accuracy = current_accuracy
-                print(f"Current-Best -> {max_current_accuracy * 100:.6f}%")
-                torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_current_best.pth")
-            correct_num += current_correct_num
-            total_num += current_total_num
-            accuracy = correct_num / total_num
-            # 保存最好的训练结果
-            if accuracy > max_total_accuracy:
-                max_total_accuracy = accuracy
-                print(f"Total  -Best -> {max_total_accuracy * 100:.6f}%")
-                torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_total_best.pth")
+        current_accuracy = current_correct_num / current_total_num
+        print(f'Test Accuracy: {current_accuracy * 100:.6f}%')
+        torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_newest.pth")
+        # 保存当前批次最好的训练结果
+        if current_accuracy > max_current_accuracy:
+            max_current_accuracy = current_accuracy
+            print(f"Current-Best -> {max_current_accuracy * 100:.6f}%")
+            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_current_best.pth")
+        correct_num += current_correct_num
+        total_num += current_total_num
+        accuracy = correct_num / total_num
+        # 保存最好的训练结果
+        if accuracy > max_total_accuracy:
+            max_total_accuracy = accuracy
+            print(f"Total  -Best -> {max_total_accuracy * 100:.6f}%")
+            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_total_best.pth")
 
 
 if __name__ == "__main__":
