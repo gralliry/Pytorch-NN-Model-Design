@@ -15,7 +15,7 @@ from module import TextRCNN, TextRNN_Att, MyDataset
 
 CUDA = True
 
-DICT_PATH = "./parameter"
+DICT_PATH = "parameter"
 
 
 def main():
@@ -38,12 +38,6 @@ def main():
     if not os.path.exists(DICT_PATH):
         os.makedirs(DICT_PATH)
 
-    # 评估模型
-    correct_num = 0
-    total_num = 0
-    max_total_accuracy = 1e-8
-    max_current_accuracy = 1e-8
-
     # 训练模型
     num_epochs = 1000
     for epoch in range(1, num_epochs + 1):
@@ -58,33 +52,18 @@ def main():
             loss.backward()
             optimizer.step()
 
-        current_correct_num = 0
-        current_total_num = 0
-
+        # 评估模型
+        correct_num = 0
+        total_num = 0
         run_model.eval()
         with torch.no_grad():
             for text, labels in dataset.get_train_iterator(train=False):
                 predictions = run_model(text)
 
-                current_correct_num += (predictions.argmax(1) == labels).sum().item()
-                current_total_num += labels.size(0)
-
-        current_accuracy = current_correct_num / current_total_num
-        print(f'Test Accuracy: {current_accuracy * 100:.6f}%')
-        torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_newest.pth")
-        # 保存当前批次最好的训练结果
-        if current_accuracy > max_current_accuracy:
-            max_current_accuracy = current_accuracy
-            print(f"Current-Best -> {max_current_accuracy * 100:.6f}%")
-            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_current_best.pth")
-        correct_num += current_correct_num
-        total_num += current_total_num
-        accuracy = correct_num / total_num
-        # 保存最好的训练结果
-        if accuracy > max_total_accuracy:
-            max_total_accuracy = accuracy
-            print(f"Total  -Best -> {max_total_accuracy * 100:.6f}%")
-            torch.save(run_model.state_dict(), f"./parameter/{HASHCODE}_total_best.pth")
+                correct_num += (predictions.argmax(1) == labels).sum().item()
+                total_num += labels.size(0)
+        print(f'Test Accuracy: {correct_num / total_num * 100:.6f}%')
+        torch.save(run_model.state_dict(), f"../parameter/{HASHCODE}_{epoch}_{correct_num / total_num}.pth")
 
 
 if __name__ == "__main__":

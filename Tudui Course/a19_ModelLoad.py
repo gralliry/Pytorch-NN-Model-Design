@@ -29,4 +29,4 @@ class Tudui(nn.Module):
 
 tudui = Tudui()
 
-torch.save(tudui, "./parameter/tudui_method1.pth")
+torch.save(tudui, "parameter/tudui_method1.pth")

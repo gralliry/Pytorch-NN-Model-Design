@@ -12,7 +12,7 @@ import torch.nn as nn
 from module import MyDataset, Seq2Seq
 
 ROOT = os.getcwd()
-DICT_PATH = "./parameter"
+DICT_PATH = "parameter"
 
 
 def translate(sentence, model, dataset: MyDataset):

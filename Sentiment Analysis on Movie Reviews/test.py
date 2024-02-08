@@ -20,8 +20,7 @@ def main():
     # 实例化模型
     run_model = TextRCNN(len(dataset.text.vocab)).to(device)
     run_model.load_state_dict(
-        torch.load("./parameter/TextRCNN_2024-02-05-10-56-20_newest.pth", map_location=device),
-        strict=False)
+        torch.load("parameter/TextRCNN_2024-02-08-19-24-17_9_0.670959887222863.pth", map_location=device))
 
     data = [["PhraseId", "Sentiment"]]
     phraseId_data = []
@@ -34,7 +33,7 @@ def main():
             sentiment_data.extend(predictions.argmax(dim=1).tolist())
     data.extend([[i, s] for i, s in zip(phraseId_data, sentiment_data)])
     # 写入 CSV 文件
-    with open("./test_result.csv", 'w', newline='') as csvfile:
+    with open("test_result.csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         # 写入数据
         csvwriter.writerows(data)
