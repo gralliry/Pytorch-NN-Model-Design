@@ -2,8 +2,8 @@
 
 ## Description
 
-Many projects of pytorch for learning Network-Model-Design.
-Most of the projects can be found in kaggle.com.
+Many tasks of pytorch for learning Network-Model-Design.
+Most of the taks can be found in kaggle.com.
 
 ## Example
 
@@ -12,10 +12,12 @@ Most of the projects can be found in kaggle.com.
 * Sentiment Analysis on Movie Review
 * Binary Classification with a Bank Churn Dataset
 * Multi-Class Prediction of Obesity Risk
+* Regression with a Mohs Hardness Dataset
 
 ## Contributor
 
-* Jianye Liang
+* gralliry
+* zuozuo
 
 ## Contact
 
