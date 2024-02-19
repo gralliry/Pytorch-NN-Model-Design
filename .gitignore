@@ -11,3 +11,7 @@ parameter/
 tensorboard/
 
 venv/
+
+result.csv
+
+result.tsv
