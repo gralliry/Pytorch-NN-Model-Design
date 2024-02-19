@@ -21,11 +21,11 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     epochs = 1000
+    model.train()
     for epoch in range(1, epochs + 1):
         print(epoch)
         correct_num = 0
         total_num = 0
-        model.train()
         for data, label in dataloader:
             data, label = data.to(device), label.to(device)
             pred = model(data)
@@ -39,7 +39,7 @@ def main():
 
         print(f"Accuracy: {correct_num / total_num}")
         torch.save(model.state_dict(),
-                   f"../parameter/Multi-Class Prediction of Obesity Risk/{HASHCODE}_{epoch}_{correct_num / total_num}.pth")
+                   f"parameter/{HASHCODE}_{epoch}_{correct_num / total_num}.pth")
 
 
 if __name__ == "__main__":

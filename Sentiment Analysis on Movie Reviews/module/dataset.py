@@ -8,7 +8,7 @@ import os
 
 from torchtext.data import Field, TabularDataset, BucketIterator
 
-DATASET_PATH = 'E:\\Datasets\\sentiment-analysis-on-movie-reviews'
+DATASET_PATH = 'E:\\Datasets\\Sentiment Analysis on Movie Reviews'
 
 
 # torchtext已经继承dataset，这里不用重复继承

@@ -24,7 +24,7 @@ def main():
         ["id", "NObeyesdad"]
     ]
 
-    model.train()
+    model.eval()
     for data, id in dataloader:
         data = data.to(device)
         pred = model(data)

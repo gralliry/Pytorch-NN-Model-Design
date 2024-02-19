@@ -28,7 +28,7 @@ class TrainDataset(Dataset):
     def __init__(self):
         self.data = []
         self.label = []
-        with open("E:\\Datasets\\playground-series-s4e2\\train.csv", 'r') as file:
+        with open("E:\\Datasets\\Multi-Class Prediction of Obesity Risk\\train.csv", 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:
@@ -56,7 +56,7 @@ class TrainDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, item):
-        return torch.tensor(self.data[item]), torch.tensor(self.label[item])
+        return self.data[item], torch.tensor(self.label[item])
 
 
 class TestDataset(Dataset):
@@ -64,7 +64,7 @@ class TestDataset(Dataset):
     def __init__(self):
         self.data = []
         self.id = []
-        with open("E:\\Datasets\\playground-series-s4e2\\test.csv", 'r') as file:
+        with open("E:\\Datasets\\Multi-Class Prediction of Obesity Risk\\test.csv", 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:
@@ -92,4 +92,4 @@ class TestDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, item):
-        return torch.tensor(self.data[item]), self.id[item]
+        return self.data[item], self.id[item]
