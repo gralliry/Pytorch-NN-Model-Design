@@ -9,7 +9,8 @@ import os
 import torch
 import torch.nn as nn
 
-from module import MyDataset, Seq2Seq
+from model import Seq2Seq
+from dataset import MyDataset
 
 ROOT = os.getcwd()
 DICT_PATH = "parameter"
