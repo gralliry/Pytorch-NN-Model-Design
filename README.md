@@ -3,9 +3,10 @@
 ## Description
 
 Many tasks of pytorch for learning Network-Model-Design.
-Most of the taks can be found in kaggle.com.
 
-## Example
+Most of the tasks can be found in kaggle.com.
+
+## Example / Task
 
 * English to Chinese
 * Next Frame Prediction

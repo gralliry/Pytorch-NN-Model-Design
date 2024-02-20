@@ -7,7 +7,10 @@ from datetime import datetime
 import torch
 from torch import optim
 from torch.utils.data.dataloader import DataLoader
-from module import TrainDataset, Model, Criterion
+
+from dataset import TrainDataset
+from model import Model
+from criterion import Criterion
 
 
 def main():

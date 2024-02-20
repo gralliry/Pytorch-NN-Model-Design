@@ -6,7 +6,9 @@ import csv
 
 import torch
 from torch.utils.data.dataloader import DataLoader
-from module import TestDataset, Model
+
+from dataset import TestDataset
+from model import Model
 
 
 def main():

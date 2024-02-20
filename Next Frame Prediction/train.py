@@ -13,7 +13,8 @@ from torch import nn, optim
 from torch.utils.data.dataloader import DataLoader
 from torchvision import transforms
 
-from module import CvImageDataset, UNet
+from dataset import CvImageDataset
+from model import UNet
 
 CUDA = True
 DICT_PATH = "./parameter"

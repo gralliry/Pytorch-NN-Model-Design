@@ -9,7 +9,8 @@ from datetime import datetime
 import torch
 from torch import nn, optim
 from torch.utils.data.dataloader import DataLoader
-from module import TrainDataset, Model
+from dataset import TrainDataset
+from model import Model
 
 
 def main():
