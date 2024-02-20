@@ -4,13 +4,15 @@
 
 Many tasks of pytorch for learning Network-Model-Design.
 
-Most of the tasks can be found in kaggle.com:
+Most of the tasks can be found in [kaggle.com](https://kaggle.com):
 
-* This is just a practice project, and many of the tasks on [kaggle.com](https://kaggle.com) don't have great results.
+* This is just a practice project, and many of the tasks on kaggle.com don't have great results.
 
-* In fact, there is no need to use pytorch for some __machine learning__ tasks (unless you have a high understanding of the underlying principles of machine learning), which can lead to some less efficient work.
+* In fact, there is no need to use pytorch for some __machine learning__ tasks (unless you have a high understanding of
+  the underlying principles of machine learning), which can lead to some less efficient work.
 
-I'm putting together a collection of simple and helpful tasks for newcomers that I hope will help myself and others who want to learn deep learning.
+I'm putting together a collection of simple and helpful tasks for newcomers that I hope will help myself and others who
+want to learn deep learning.
 
 ## Example / Task
 
@@ -24,24 +26,25 @@ I'm putting together a collection of simple and helpful tasks for newcomers that
 
 ## Structure
 
-The sample files are in the template folder.
+The sample files are in the ```template``` folder.
 
-Note: Since the general model parameter file is large, it will not be uploaded to [github.com](https://github.com), if the code does not have the logic to create this folder, please create your own ```parameter``` folder.
+Note: Since the general model parameter file is large, it will not be uploaded to [github.com](https://github.com), if the code does not
+have the logic to create this folder, please create your own ```parameter``` folder.
 
 ```
-dataset/     # Folder to store the data set
+dataset/      # Folder to store the data set
 
-parameter/   # Folder to store model parameters
+parameter/    # Folder to store model parameters
 
-criterion.py # loss function
+criterion.py  # loss function
 
-dataset.py   # custom dataset
+dataset.py    # custom dataset
 
-model.py     # model
+model.py      # model
 
-train.py     # train the model
+train.py      # train the model
 
-test.py      # test the model
+test.py       # test the model
 ```
 
 ## Contributor
@@ -56,3 +59,6 @@ Email: aiccyxixy@163.com
 ## License
 
 ```GNU General Public License v3.0```
+
+This project has open source tasks, according to the provisions of the open source agreement, this project is open
+source

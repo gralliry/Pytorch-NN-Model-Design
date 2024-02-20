@@ -31,7 +31,7 @@ def main():
             pred_result.append([id, round(result, 3)])
 
     # 将数据写入 CSV 文件
-    with open("./result.csv", 'w', newline='') as file:
+    with open("dataset/result.csv", 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(pred_result)
 

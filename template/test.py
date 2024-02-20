@@ -6,7 +6,12 @@ import csv
 
 import torch
 from torch.utils.data.dataloader import DataLoader
-from module import TestDataset, Model
+
+from dataset import TestDataset
+from model import Model
+
+HASHDIR = ""
+FILENAME = ""
 
 
 def main():
@@ -14,7 +19,7 @@ def main():
     dataloader = DataLoader(dataset=TestDataset(), batch_size=1024)
     model = Model().to(device)
     model.load_state_dict(
-        torch.load("./parameter/?.pth", map_location=device))
+        torch.load(f"./parameter/{HASHDIR}/{FILENAME}", map_location=device))
 
     pred_result = [
         ["...", "..."]
@@ -29,7 +34,7 @@ def main():
             pred_result.append([id, ...])
 
     # 将数据写入 CSV 文件
-    with open("./result.csv", 'w', newline='') as file:
+    with open("dataset/result.csv", 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(pred_result)
 

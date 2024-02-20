@@ -8,7 +8,9 @@ import csv
 
 import torch
 from torch.utils.data.dataloader import DataLoader
-from module import TestDataset, Model, NObeyesdad_Re
+
+from dataset import TestDataset, NObeyesdad_Re
+from model import Model
 
 
 def main():
@@ -33,7 +35,7 @@ def main():
             pred_result.append([id, NObeyesdad_Re[pred_index]])
 
     # 将数据写入 CSV 文件
-    with open("./result.csv", 'w', newline='') as file:
+    with open("dataset/result.csv", 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(pred_result)
 
