@@ -10,7 +10,7 @@ import torch
 
 from torch.utils.data import Dataset
 
-DATASET_PATH = "../dataset"
+DATASET_PATH = "dataset"
 
 Geography = {"France": 0, "Spain": 1, "Germany": 2}
 Gender = {"Male": 0, "Female": 1}
