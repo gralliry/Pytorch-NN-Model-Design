@@ -8,8 +8,7 @@ import csv
 
 import torch
 
-from dataset import MyDataset
-from model import TextRCNN
+from module import TextRNN_Att, MyDataset, TextRCNN
 
 CUDA = True
 
