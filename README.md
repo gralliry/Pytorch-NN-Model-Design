@@ -52,3 +52,7 @@ test.py      # test the model
 ## Contact
 
 Email: aiccyxixy@163.com
+
+## License
+
+```GNU General Public License v3.0```
