@@ -8,7 +8,7 @@ import os
 
 from torchtext.data import Field, TabularDataset, BucketIterator
 
-DATASET_PATH = 'dataset'
+DATASET_PATH = '../dataset'
 
 
 # torchtext已经继承dataset，这里不用重复继承

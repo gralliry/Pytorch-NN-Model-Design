@@ -28,7 +28,7 @@ class TrainDataset(Dataset):
     def __init__(self):
         self.data = []
         self.label = []
-        with open("dataset/train.csv", 'r') as file:
+        with open("../dataset/train.csv", 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:
@@ -64,7 +64,7 @@ class TestDataset(Dataset):
     def __init__(self):
         self.data = []
         self.id = []
-        with open("dataset/test.csv", 'r') as file:
+        with open("../dataset/test.csv", 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:

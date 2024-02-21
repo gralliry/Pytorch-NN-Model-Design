@@ -11,8 +11,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from dataset import MyDataset
-from model import TextRCNN
+from module import TextRCNN, TextRNN_Att, MyDataset
 
 CUDA = True
 

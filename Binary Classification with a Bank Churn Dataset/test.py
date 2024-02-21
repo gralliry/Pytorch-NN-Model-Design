@@ -8,9 +8,8 @@ import csv
 
 import torch
 from torch.utils.data.dataloader import DataLoader
+from module import TestDataset, Model
 
-from dataset import TestDataset
-from model import Model
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -34,7 +33,7 @@ def main():
             pred_result.append([sub_id, pred_index])
 
     # 将数据写入 CSV 文件
-    with open("dataset/result.csv", 'w', newline='') as file:
+    with open("./result.csv", 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(pred_result)
 
