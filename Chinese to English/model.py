@@ -4,12 +4,11 @@
 # @Author  : Jianye Liang
 # @File    : module.py
 # @Description :
-import math
 import torch
 from torch import nn
 
 
-class Transformer(nn.Module):
+class Model(nn.Module):
     def __init__(
             self,
             embedding_size,
@@ -24,7 +23,7 @@ class Transformer(nn.Module):
             max_len,
             device,
     ):
-        super(Transformer, self).__init__()
+        super(Model, self).__init__()
         self.src_word_embedding = nn.Embedding(src_vocab_size, embedding_size)
         self.src_position_embedding = nn.Embedding(max_len, embedding_size)
         self.trg_word_embedding = nn.Embedding(trg_vocab_size, embedding_size)
@@ -38,6 +37,7 @@ class Transformer(nn.Module):
             num_decoder_layers,
             forward_expansion,
             dropout,
+            batch_first=True
         )
         self.fc_out = nn.Linear(embedding_size, trg_vocab_size)
         self.dropout = nn.Dropout(dropout)

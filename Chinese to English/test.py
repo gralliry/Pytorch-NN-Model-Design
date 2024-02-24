@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Description :
+
+import torch
+
+from model import Model
+from dataset import TrainDataset
+
+
+def translate(sentence, model, dataset, device):
+    # batch_size = 1 # Convert to Tensor
+    words = dataset.chinese_2_vector(sentence).unsqueeze(1)
+
+    outputs = [dataset.EN_SOS]
+    model.eval()
+    with torch.no_grad():
+        for i in range(dataset.chinese.fix_length):
+            trg_tensor = torch.LongTensor(outputs).unsqueeze(1).to(device)
+
+            output = model(words, trg_tensor)
+
+            best_guess = output.argmax(2)[-1, :].item()
+
+            outputs.append(best_guess)
+
+            if best_guess == dataset.EN_EOS:
+                break
+    # 英语索引翻译成英文
+    return dataset.vector_2_english(outputs, join=True)
+
+
+def main():
+    # 设备
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # 数据集
+    dataset = TrainDataset(device=device, batch_size=256)
+    print("数据集加载完成")
+
+    src_vocab_size = len(dataset.chinese.vocab)
+    trg_vocab_size = len(dataset.english.vocab)
+
+    src_pad_idx = dataset.chinese.vocab.stoi['<pad>']
+    trg_pad_idx = dataset.english.vocab.stoi['<pad>']
+
+    embedding_size = 512
+    num_heads = 8
+    num_encoder_layers = 6
+    num_decoder_layers = 6
+    dropout = 0.1
+    max_len = 120  # 最长一个句子的长度也不能超过 max_len
+
+    forward_expansion = 2048  # pytorch官方实现的transformer中，这个参数就是线性层升维后的结果
+
+    # 模型 # Initialize network
+    model = Model(
+        embedding_size,
+        src_vocab_size,
+        trg_vocab_size,
+        src_pad_idx, num_heads,
+        num_encoder_layers,
+        num_decoder_layers,
+        forward_expansion, dropout, max_len, device
+    ).to(device)
+
+    print("模型加载完成")
+
+    while True:
+        s = input("请输入中文: ")
+        print("译文:", translate(s, model, dataset, device))
+
+
+if __name__ == "__main__":
+    main()

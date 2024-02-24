@@ -16,7 +16,7 @@ want to learn deep learning.
 
 ## Example / Task
 
-* English to Chinese
+* Chinese to English
 * Next Frame Prediction
 * Sentiment Analysis on Movie Review
 * Binary Classification with a Bank Churn Dataset
