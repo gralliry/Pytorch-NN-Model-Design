@@ -20,7 +20,7 @@ image = tranform(image).cuda()
 image = torch.reshape(image, (1, 3, 32, 32))
 print(image.shape)
 
-model = torch.load("parameter/a20_train.pth")
+model = torch.load("checkpoint/a20_train.pth")
 print(model)
 
 model.eval()

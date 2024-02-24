@@ -17,7 +17,7 @@ from dataset import CvImageDataset
 from model import UNet
 
 CUDA = True
-DICT_PATH = "./parameter"
+DICT_PATH = "./checkpoint"
 
 
 def train():
@@ -29,7 +29,7 @@ def train():
     ]))
     dataloader = DataLoader(dataset=dataset, batch_size=4, drop_last=False)
     model = UNet().to(device)
-    # model.load_state_dict(torch.load("./parameter/Seq2Seq/88.pth", map_location=device))
+    # model.load_state_dict(torch.load("./checkpoint/Seq2Seq/88.pth", map_location=device))
 
     criterion = nn.L1Loss().to(device)
     optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -60,7 +60,7 @@ def train():
         print(f"No.{counter} Loss: {average_loss}")
 
         if counter % 1000 == 0:
-            torch.save(model.state_dict(), f"./parameter/{average_loss}.pth")
+            torch.save(model.state_dict(), f"./checkpoint/{average_loss}.pth")
 
 
 def generate_video(model, device, second, fps=1):

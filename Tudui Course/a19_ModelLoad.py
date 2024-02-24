@@ -7,11 +7,11 @@ import torch
 import torchvision.models
 from torch import nn
 
-model1 = torch.load("./parameter/vgg16_method1.pth")
+model1 = torch.load("checkpoint/vgg16_method1.pth")
 print(model1)
 
 vgg16 = torchvision.models.vgg16(pretrained=False)
-vgg16.load_state_dict(torch.load("./parameter/vgg16_method2.pth"))
+vgg16.load_state_dict(torch.load("checkpoint/vgg16_method2.pth"))
 
 print(vgg16)
 
@@ -29,4 +29,4 @@ class Tudui(nn.Module):
 
 tudui = Tudui()
 
-torch.save(tudui, "parameter/tudui_method1.pth")
+torch.save(tudui, "checkpoint/tudui_method1.pth")

@@ -13,7 +13,7 @@ from model import Seq2Seq
 from dataset import MyDataset
 
 ROOT = os.getcwd()
-DICT_PATH = "parameter"
+DICT_PATH = "checkpoint"
 
 
 def translate(sentence, model, dataset: MyDataset):
@@ -40,7 +40,7 @@ def main():
         decoder_embedding_num=100, decoder_hidden_num=100, ch_corpus_len=len(dataset.chinese.vocab)
     ).to(device)
 
-    # model.load_state_dict(torch.load('./parameter/3_20500_0.00633060569626211.pth', map_location=device))
+    # model.load_state_dict(torch.load('./checkpoint/3_20500_0.00633060569626211.pth', map_location=device))
     # 损失函数
     criterion = nn.CrossEntropyLoss().to(device)
     # 优化器
@@ -72,7 +72,7 @@ def main():
 
             if total_step % 100 == 0:
                 torch.save(model.state_dict(),
-                           f'./parameter/{i}_{total_step}_{total_loss / (total_step * dataset.batch_size)}.pth')
+                           f'checkpoint/{i}_{total_step}_{total_loss / (total_step * dataset.batch_size)}.pth')
                 scheduler.step()
                 print(f"loss:{total_loss / (total_step * dataset.batch_size)}")
 

@@ -21,7 +21,7 @@ def main():
     # 实例化模型
     run_model = TextRCNN(len(dataset.text.vocab)).to(device)
     run_model.load_state_dict(
-        torch.load("parameter/TextRCNN_2024-02-08-19-24-17_9_0.670959887222863.pth", map_location=device))
+        torch.load("checkpoint/TextRCNN_2024-02-08-19-24-17_9_0.670959887222863.pth", map_location=device))
 
     data = [["PhraseId", "Sentiment"]]
     phraseId_data = []

@@ -5,12 +5,8 @@
 # @File    : dataset.py
 # @Description :
 import os
-import logging
 
 from torchtext.data import Field, TabularDataset, BucketIterator
-import jieba
-
-jieba.setLogLevel(logging.INFO)
 
 DATASET_PATH = 'E:\\Datasets\\translation2019zh'
 
@@ -22,8 +18,10 @@ class MyDataset:
         self.device = device
         self.batch_size = batch_size
         # 定义文本字段 # 设置 include_lengths=True
-        self.english = Field(sequential=True, tokenize=lambda x: x.split(), lower=True, batch_first=True, fix_length=50)
-        self.chinese = Field(sequential=True, tokenize=lambda x: list(jieba.cut(x)), batch_first=True, fix_length=50)
+        self.english = Field(sequential=True, tokenize=lambda x: x.split(), fix_length=50, lower=True,
+                             init_token='<sos>', eos_token='<eos>')
+        self.chinese = Field(sequential=True, tokenize=lambda x: x.split(), fix_length=50, lower=True,
+                             init_token='<sos>', eos_token='<eos>')
 
         # 加载数据集
         train_data_set = TabularDataset(
@@ -36,17 +34,15 @@ class MyDataset:
         train_data, valid_data = train_data_set.split(split_ratio=split_ratio)
 
         # 构建词汇表
-        self.english.build_vocab(train_data)
-        self.chinese.build_vocab(train_data)
+        self.english.build_vocab(train_data, max_size=30000, min_freq=2)
+        self.chinese.build_vocab(train_data, max_size=30000, min_freq=2)
 
         # 创建迭代器
         self.train_iterator, self.valid_iterator = BucketIterator.splits(
             (train_data, valid_data),
             batch_size=batch_size,
-            sort_key=lambda x: len(x.Phrase),
-            sort_within_batch=False,
-            shuffle=True,
-            repeat=False,
+            sort_key=lambda x: len(x.chinese),
+            sort_within_batch=True,
             device=device,
         )
 

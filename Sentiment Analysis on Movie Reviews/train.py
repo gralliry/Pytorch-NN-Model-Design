@@ -16,7 +16,7 @@ from model import TextRCNN
 
 CUDA = True
 
-DICT_PATH = "parameter"
+DICT_PATH = "checkpoint"
 
 
 def main():
@@ -64,7 +64,7 @@ def main():
                 correct_num += (predictions.argmax(1) == labels).sum().item()
                 total_num += labels.size(0)
         print(f'Test Accuracy: {correct_num / total_num * 100:.6f}%')
-        torch.save(run_model.state_dict(), f"../parameter/{HASHCODE}_{epoch}_{correct_num / total_num}.pth")
+        torch.save(run_model.state_dict(), f"../checkpoint/{HASHCODE}_{epoch}_{correct_num / total_num}.pth")
 
 
 if __name__ == "__main__":

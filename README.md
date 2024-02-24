@@ -29,12 +29,12 @@ want to learn deep learning.
 The sample files are in the ```template``` folder.
 
 Note: Since the general model parameter file is large, it will not be uploaded to [github.com](https://github.com), if the code does not
-have the logic to create this folder, please create your own ```parameter``` folder.
+have the logic to create this folder, please create your own ```checkpoint``` folder.
 
 ```
 dataset/      # Folder to store the data set
 
-parameter/    # Folder to store model parameters
+checkpoint/    # Folder to store model parameters
 
 criterion.py  # loss function
 

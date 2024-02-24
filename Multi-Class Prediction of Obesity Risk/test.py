@@ -19,7 +19,7 @@ def main():
     model = Model().to(device)
     model.load_state_dict(
         torch.load(
-            "parameter/Model_2024-02-08-22-33-38_160_0.895068347454071.pth",
+            "checkpoint/Model_2024-02-08-22-33-38_160_0.895068347454071.pth",
             map_location=device))
 
     pred_result = [
