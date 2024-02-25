@@ -24,10 +24,10 @@ class TrainDataset:
         self.chinese_fix_length = chinese_fix_length
         self.english_fix_length = english_fix_length
         # 定义文本字段 # 设置 include_lengths=True
-        self.english = Field(sequential=True, tokenize=english_tokenizer, fix_length=english_fix_length, lower=True,
-                             init_token='<sos>', eos_token='<eos>', batch_first=True)
-        self.chinese = Field(sequential=True, tokenize=chinese_tokenizer, fix_length=chinese_fix_length, lower=True,
-                             init_token='<sos>', eos_token='<eos>', batch_first=True)
+        english = Field(sequential=True, tokenize=english_tokenizer, fix_length=english_fix_length, lower=True,
+                        init_token='<sos>', eos_token='<eos>', batch_first=True)
+        chinese = Field(sequential=True, tokenize=chinese_tokenizer, fix_length=chinese_fix_length, lower=True,
+                        init_token='<sos>', eos_token='<eos>', batch_first=True)
 
         # 加载数据集
         # PermissionError: [Errno 13] Permission denied ? must use ".splits(...)"
@@ -36,30 +36,33 @@ class TrainDataset:
             train='sentences_train.tsv',
             test="sentences_valid.tsv",
             format='tsv',
-            fields=[('english', self.english), ('chinese', self.chinese)],
+            fields=[('english', english), ('chinese', chinese)],
             skip_header=True,  # 是否跳过 TSV 文件的头部
         )
 
         # 构建词汇表
-        self.english.build_vocab(train_data, max_size=10000, min_freq=5)
-        self.chinese.build_vocab(train_data, max_size=10000, min_freq=5)
+        english.build_vocab(train_data, max_size=10000, min_freq=5)
+        chinese.build_vocab(train_data, max_size=10000, min_freq=5)
+
+        self.english_vocab_size = len(english.vocab)
+        self.chinese_vocab_size = len(chinese.vocab)
 
         with open("./dataset/english_stoi.json", "w", encoding="utf-8") as file:
-            json.dump(dict(self.english.vocab.stoi), file, indent=4, ensure_ascii=False)
+            json.dump(dict(english.vocab.stoi), file, indent=4, ensure_ascii=False)
         with open("./dataset/english_itos.json", "w", encoding="utf-8") as file:
-            json.dump(list(self.english.vocab.itos), file, indent=4, ensure_ascii=False)
+            json.dump(list(english.vocab.itos), file, indent=4, ensure_ascii=False)
         with open("./dataset/chinese_stoi.json", "w", encoding="utf-8") as file:
-            json.dump(dict(self.chinese.vocab.stoi), file, indent=4, ensure_ascii=False)
+            json.dump(dict(chinese.vocab.stoi), file, indent=4, ensure_ascii=False)
         with open("./dataset/chinese_itos.json", "w", encoding="utf-8") as file:
-            json.dump(list(self.chinese.vocab.itos), file, indent=4, ensure_ascii=False)
+            json.dump(list(chinese.vocab.itos), file, indent=4, ensure_ascii=False)
 
-        self.EN_SOS = self.english.vocab.stoi['<sos>']
-        self.EN_EOS = self.english.vocab.stoi['<eos>']
-        self.EN_PAD = self.english.vocab.stoi['<pad>']
+        self.EN_SOS = english.vocab.stoi['<sos>']
+        self.EN_EOS = english.vocab.stoi['<eos>']
+        self.EN_PAD = english.vocab.stoi['<pad>']
 
-        self.CH_SOS = self.chinese.vocab.stoi['<sos>']
-        self.CH_EOS = self.chinese.vocab.stoi['<eos>']
-        self.CH_PAD = self.chinese.vocab.stoi['<pad>']
+        self.CH_SOS = chinese.vocab.stoi['<sos>']
+        self.CH_EOS = chinese.vocab.stoi['<eos>']
+        self.CH_PAD = chinese.vocab.stoi['<pad>']
 
         # 创建迭代器
         self.train_dataloader, self.valid_dataloader = BucketIterator.splits(
@@ -74,34 +77,6 @@ class TrainDataset:
         for batch in (self.train_dataloader if train else self.valid_dataloader):
             # [batch_size, seq_length], [batch_size, seq_length]
             yield batch.chinese, batch.english
-
-    def vector_2_english(self, vector, join=False):
-        if isinstance(vector, torch.Tensor):
-            vector = vector.tolist()
-        # 使用vocab.itos将索引转为词语
-        words = [self.english.vocab.itos[idx] for idx in vector]
-        return english_detokenizer(words) if join else words
-
-    def vector_2_chinese(self, vector, join=False):
-        if isinstance(vector, torch.Tensor):
-            vector = vector.tolist()
-        # 使用vocab.itos将索引转为词语
-        words = [self.chinese.vocab.itos[idx] for idx in vector]
-        return chinese_detokenizer(words) if join else words
-
-    def english_2_vector(self, sentence):
-        # 使用 TEXT 对象进行处理
-        processed_sentence = self.english.preprocess(sentence)  # 分词、转小写等
-        # 将处理后的文本转为索引序列
-        # 将索引序列转为 PyTorch Tensor
-        return torch.tensor(self.english.process([processed_sentence]), device=self.device)
-
-    def chinese_2_vector(self, sentence):
-        # 使用 TEXT 对象进行处理
-        processed_sentence = self.chinese.preprocess(sentence)  # 分词、转小写等
-        # 将处理后的文本转为索引序列
-        # 将索引序列转为 PyTorch Tensor
-        return torch.tensor(self.chinese.process([processed_sentence]), device=self.device)
 
 
 class TestDataset:

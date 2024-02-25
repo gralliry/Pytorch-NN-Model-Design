@@ -33,8 +33,8 @@ def main():
     # 模型 # Initialize network
     model = Model(
         embedding_size=embedding_size,
-        src_vocab_size=len(dataset.chinese.vocab),
-        trg_vocab_size=len(dataset.english.vocab),
+        src_vocab_size=dataset.chinese_vocab_size,
+        trg_vocab_size=dataset.english_vocab_size,
         src_pad_idx=dataset.CH_PAD,
         num_heads=num_heads,
         num_encoder_layers=num_encoder_layers,

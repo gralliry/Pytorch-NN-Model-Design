@@ -15,7 +15,7 @@ def translate(sentence, model, dataset, device):
     outputs = dataset.get_start_sequence()
     model.eval()
     with torch.no_grad():
-        for i in range(dataset.chinese.fix_length):
+        for i in range(dataset.chinese_fix_length):
             trg_tensor = torch.LongTensor(outputs).unsqueeze(1).to(device)
 
             output = model(words, trg_tensor)
@@ -37,14 +37,14 @@ def main():
     dataset = TestDataset(device=device)
     print("数据集加载完成")
 
-    embedding_size = 512
-    num_heads = 8
-    num_encoder_layers = 6
-    num_decoder_layers = 6
+    embedding_size = 256
+    num_heads = 4
+    num_encoder_layers = 3
+    num_decoder_layers = 3
     dropout = 0.1
-    max_len = 120  # 最长一个句子的长度也不能超过 max_len
+    max_len = 30  # 最长一个句子的长度也不能超过 max_len
 
-    forward_expansion = 2048  # pytorch官方实现的transformer中，这个参数就是线性层升维后的结果
+    forward_expansion = 512  # pytorch官方实现的transformer中，这个参数就是线性层升维后的结果
 
     # 模型 # Initialize network
     model = Model(
@@ -61,8 +61,8 @@ def main():
     print("模型加载完成")
 
     while True:
-        s = input("请输入中文: ")
-        print("译文:", translate(s, model, dataset, device))
+        sentence = input("请输入中文: ")
+        print("译文:", translate(sentence, model, dataset, device))
 
 
 if __name__ == "__main__":
