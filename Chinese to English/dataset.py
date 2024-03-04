@@ -23,6 +23,8 @@ class TrainDataset:
         self.batch_size = batch_size
         self.chinese_fix_length = chinese_fix_length
         self.english_fix_length = english_fix_length
+
+        # 直接保存python对象比较好
         # 定义文本字段 # 设置 include_lengths=True
         english = Field(sequential=True, tokenize=english_tokenizer, fix_length=english_fix_length, lower=True,
                         init_token='<sos>', eos_token='<eos>', batch_first=True)

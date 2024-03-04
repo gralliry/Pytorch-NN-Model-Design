@@ -3,7 +3,7 @@
 # @Time    : 2024/1/23 18:50
 # @Author  : Jianye Liang
 # @File    : module.py
-# @Description :
+# @Description : https://github.com/Mountchicken/Chinese2English-Translator-with-Transformers
 import torch
 from torch import nn
 

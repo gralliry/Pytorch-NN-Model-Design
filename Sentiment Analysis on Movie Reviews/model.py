@@ -136,3 +136,36 @@ class TextRNN(nn.Module):
         fc_input = self.bn2(last_tensor)
         out = self.fc(fc_input)
         return out
+
+
+class TextCNN(nn.Module):
+    def __init__(self, vocab_size, embedding_size=512, padding_index=0, num_filters=20, num_classes=5, dropout=0.7):
+        super(TextCNN, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_size, padding_idx=padding_index)
+
+        self.conv1 = nn.Conv2d(1, num_filters, (2, embedding_size))
+        self.conv2 = nn.Conv2d(1, num_filters, (3, embedding_size))
+        self.conv3 = nn.Conv2d(1, num_filters, (4, embedding_size))
+
+        self.dropout = nn.Dropout(dropout)
+
+        self.fc = nn.Linear(num_filters * 3, num_classes)
+
+    def conv_and_pool(self, x, conv):
+        x = conv(x)
+        x = f.relu(x)
+        x = x.squeeze(3)
+        x = f.max_pool1d(x, x.size(2))
+        x = x.squeeze(2)
+        return x
+
+    def forward(self, x):
+        emb = self.embedding(x)
+        out = emb.unsqueeze(1)
+        out1 = self.conv_and_pool(out, self.conv1)
+        out2 = self.conv_and_pool(out, self.conv2)
+        out3 = self.conv_and_pool(out, self.conv3)
+        out = torch.cat([out1, out2, out3], 1)
+        out = self.dropout(out)
+        out = self.fc(out)
+        return out

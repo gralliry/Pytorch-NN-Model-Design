@@ -20,15 +20,15 @@ def main():
     # 设备
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     # 数据集
-    dataset = TrainDataset(device=device, batch_size=1024)
+    dataset = TrainDataset(device=device, batch_size=2048)
 
-    embedding_size = 256
-    num_heads = 4
-    num_encoder_layers = 3
-    num_decoder_layers = 3
+    embedding_size = 32  # 512
+    num_heads = 4  # 8 must be odd
+    num_encoder_layers = 6  # 6
+    num_decoder_layers = 6  # 6
     dropout = 0.1
 
-    forward_expansion = 512  # pytorch官方实现的transformer中，这个参数就是线性层升维后的结果
+    forward_expansion = 512  # 2048 pytorch官方实现的transformer中，这个参数就是线性层升维后的结果
 
     # 模型 # Initialize network
     model = Model(
@@ -53,6 +53,7 @@ def main():
     if not os.path.exists(DICT_PATH):
         os.makedirs(DICT_PATH)
 
+    total_step = 0
     epoch = 100
 
     model.train()
@@ -60,7 +61,8 @@ def main():
         print(f"No.{i} training")
         epoch_step = 0
         epoch_loss = 0
-        for inp_data, target in dataset.iterator(train=True):
+        for step, (inp_data, target) in enumerate(dataset.iterator(train=True), start=1):
+            print(f"Step.{step}")
             # 丢弃<eos>
             output = model(inp_data, target[:, :-1])
             # [batch_size * trg_seq_length, trg_vocab_size]
@@ -74,16 +76,24 @@ def main():
             loss = criterion(output, target)
 
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1)  # 梯度裁剪
             optimizer.step()
 
             epoch_step += 1
-            epoch_loss += loss
+            # 不要直接加，否则会被当成计算图的一部分
+            epoch_loss += loss.item()
 
-        torch.save(model.state_dict(), f'checkpoint/{i}_{epoch_loss.item() / (epoch_step * dataset.batch_size)}.pth')
+            total_step += 1
 
-        print(f"loss:{(epoch_loss / epoch_step).item()}")
+            if total_step % 100 == 0:
 
-        scheduler.step(epoch_loss / epoch_step)
+                mean_loss = epoch_loss / (epoch_step * dataset.batch_size)
+
+                torch.save(model.state_dict(), f'checkpoint/{total_step}_{mean_loss}.pth')
+
+                print(f"loss:{mean_loss}")
+
+                scheduler.step(mean_loss)
 
 
 if __name__ == "__main__":

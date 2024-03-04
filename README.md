@@ -61,7 +61,7 @@ test.py       # test the model
 
 ## Contact
 
-Email: ```aiccyxixy@163.com```
+Email: aiccyxixy@163.com
 
 ## License
 
