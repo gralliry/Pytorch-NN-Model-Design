@@ -56,7 +56,7 @@ test.py       # test the model
 
 ## Contributors
 
-* [gralliry](https://github.com/gralliry)
+* [gralliry(Liang Jianye)](https://github.com/gralliry)
 * zuozuo
 
 ## Contact
