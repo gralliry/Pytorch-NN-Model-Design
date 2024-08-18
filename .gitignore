@@ -1,17 +1,19 @@
-__pycache__
-
-.idea/
-
-.vscode/
-
-draft/
-
-checkpoint/
-
-tensorboard/
+._*
+*.pyc
+.DS_Store
+__pycache__/
 
 venv/
 
-result.csv
+.vscode/
+.idea/
 
-result.tsv
+draft/
+
+# 忽略所有 checkpoint 文件夹中的所有内容
+**/checkpoint/**
+
+# 但保留所有子目录中的 .gitkeep 文件
+!**/checkpoint/**/.gitkeep
+
+tensorboard/
