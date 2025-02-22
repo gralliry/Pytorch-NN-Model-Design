@@ -56,8 +56,7 @@ test.py       # test the model
 
 ## Contributors
 
-* [gralliry(Liang Jianye)](https://github.com/gralliry)
-* zuozuo
+* [gralliry](https://github.com/gralliry)
 
 ## Contact
 
@@ -65,7 +64,4 @@ Email: aiccyxixy@163.com
 
 ## License
 
-```GNU General Public License v3.0```
-
-This project has open source tasks, according to the provisions of the open source agreement, this project is open
-source
+```MIT License```
